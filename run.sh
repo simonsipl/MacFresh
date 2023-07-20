@@ -54,8 +54,6 @@ done
 # Remove the temporary directory
 rm -rf "${temp_fonts_dir}"
 
-
-
 #Install programs
 
 brew list romkatv/powerlevel10k/powerlevel10k || brew install romkatv/powerlevel10k/powerlevel10k
@@ -65,6 +63,8 @@ then
 else
     echo "source $(brew --prefix)/opt/powerlevel10k/powerlevel10k.zsh-theme" >> ~/.zshrc
 fi
+pip3 install --upgrade pip
+pip3 install npyscreen
 
 brew list rust || brew install rust
 brew list intellij-idea || brew install intellij-idea
@@ -72,7 +72,15 @@ brew list android-platform-tools || brew install android-platform-tools
 brew list android-studio || brew install android-studio
 brew list nvm || brew install nvm
 
-#Dodaj sprawdzenie czy poniższe linie są dodane do ~/.zshrc
-echo 'export NVM_DIR=~/.nvm' >> ~/.zshrc
-echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"' >> ~/.zshrc
-echo "NVM installed"
+if ! grep -q 'export NVM_DIR=~/.nvm' ~/.zshrc; then
+  echo 'export NVM_DIR=~/.nvm' >> ~/.zshrc
+fi
+if ! grep -q '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"' ~/.zshrc; then
+  echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"' >> ~/.zshrc
+fi
+
+
+
+#Install non-developer programs
+
+python3 helpers/test.py
